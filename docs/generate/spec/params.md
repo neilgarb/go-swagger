@@ -39,6 +39,7 @@ Annotation | Format
 **Maximum items** | the maximum number of items a slice can have
 **Unique** | when set to true the slice can only contain unique items
 **Required** | when set to true this value needs to be present in the request
+**Type** | specifies the type of the parameter
 
 For slice properties there are also items to be defined. This might be a nested collection, for indicating nesting
 level the value is a 0-based index, so items.minLength is the same as items.0.minLength
@@ -54,6 +55,7 @@ Annotation | Format
 **Items.*n*.Minimum items** | the minimum number of items a slice needs to have at the level *n*
 **Items.*n*.Maximum items** | the maximum number of items a slice can have at the level *n*
 **Items.*n*.Unique** | when set to true the slice can only contain unique items at the level *n*
+**Items.*n*.Type** | specifies the type of values at level *n*
 
 ##### Example:
 
@@ -74,6 +76,7 @@ type BarSliceParam struct {
 	// items.items.items.pattern: \w+
 	// collection format: pipe
 	// in: query
+	// type: array
 	BarSlice [][][]string `json:"bar_slice"`
 }
 ```

@@ -50,6 +50,7 @@ const (
 	rxEnumFmt             = "%s[Ee]num\\p{Zs}*:\\p{Zs}*(.*)$"
 	rxDefaultFmt          = "%s[Dd]efault\\p{Zs}*:\\p{Zs}*(.*)$"
 	rxExampleFmt          = "%s[Ee]xample\\p{Zs}*:\\p{Zs}*(.*)$"
+	rxTypeFmt             = "%s[Tt]ype\\p{Zs}*:\\p{Zs}*(.*)$"
 
 	rxMaxItemsFmt = "%s[Mm]ax(?:imum)?(?:\\p{Zs}*|[\\p{Pd}\\p{Pc}]|\\.)?[Ii]tems\\p{Zs}*:\\p{Zs}*(\\p{N}+)$"
 	rxMinItemsFmt = "%s[Mm]in(?:imum)?(?:\\p{Zs}*|[\\p{Pd}\\p{Pc}]|\\.)?[Ii]tems\\p{Zs}*:\\p{Zs}*(\\p{N}+)$"

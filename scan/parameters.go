@@ -123,6 +123,8 @@ func (sv paramValidations) SetEnum(val string) {
 }
 func (sv paramValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv paramValidations) SetExample(val interface{}) { sv.current.Example = val }
+func (sv paramValidations) SetType(val string) {
+}
 
 type itemsValidations struct {
 	current *spec.Items
@@ -154,6 +156,7 @@ func (sv itemsValidations) SetEnum(val string) {
 }
 func (sv itemsValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv itemsValidations) SetExample(val interface{}) { sv.current.Example = val }
+func (sv itemsValidations) SetType(val string)         { sv.current.Type = val }
 
 type paramDecl struct {
 	File         *ast.File
@@ -367,6 +370,7 @@ func (pp *paramStructParser) parseStructType(gofile *ast.File, operation *spec.O
 						newSingleLineTagParser("enum", &setEnum{paramValidations{&ps}, rxf(rxEnumFmt, "")}),
 						newSingleLineTagParser("default", &setDefault{&ps.SimpleSchema, paramValidations{&ps}, rxf(rxDefaultFmt, "")}),
 						newSingleLineTagParser("example", &setExample{&ps.SimpleSchema, paramValidations{&ps}, rxf(rxExampleFmt, "")}),
+						newSingleLineTagParser("type", &setType{&ps.SimpleSchema, paramValidations{&ps}, rxf(rxTypeFmt, "")}),
 						newSingleLineTagParser("required", &setRequiredParam{&ps}),
 					}
 
@@ -388,6 +392,7 @@ func (pp *paramStructParser) parseStructType(gofile *ast.File, operation *spec.O
 							newSingleLineTagParser(fmt.Sprintf("items%dEnum", level), &setEnum{itemsValidations{items}, rxf(rxEnumFmt, itemsPrefix)}),
 							newSingleLineTagParser(fmt.Sprintf("items%dDefault", level), &setDefault{&items.SimpleSchema, itemsValidations{items}, rxf(rxDefaultFmt, itemsPrefix)}),
 							newSingleLineTagParser(fmt.Sprintf("items%dExample", level), &setExample{&items.SimpleSchema, itemsValidations{items}, rxf(rxExampleFmt, itemsPrefix)}),
+							newSingleLineTagParser(fmt.Sprintf("items%dType", level), &setType{&items.SimpleSchema, itemsValidations{items}, rxf(rxTypeFmt, itemsPrefix)}),
 						}
 					}
 

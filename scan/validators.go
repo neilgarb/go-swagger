@@ -39,6 +39,7 @@ type validationBuilder interface {
 	SetEnum(string)
 	SetDefault(interface{})
 	SetExample(interface{})
+	SetType(string)
 }
 
 type valueParser interface {
@@ -361,6 +362,27 @@ func (se *setExample) Parse(lines []string) error {
 			return err
 		}
 		se.builder.SetExample(d)
+	}
+	return nil
+}
+
+type setType struct {
+	scheme  *spec.SimpleSchema
+	builder validationBuilder
+	rx      *regexp.Regexp
+}
+
+func (st *setType) Matches(line string) bool {
+	return st.rx.MatchString(line)
+}
+
+func (st *setType) Parse(lines []string) error {
+	if len(lines) == 0 || (len(lines) == 1 && len(lines[0]) == 0) {
+		return nil
+	}
+	matches := st.rx.FindStringSubmatch(lines[0])
+	if len(matches) > 1 && len(matches[1]) > 0 {
+		st.builder.SetType(matches[1])
 	}
 	return nil
 }

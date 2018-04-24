@@ -117,6 +117,7 @@ func (sv headerValidations) SetEnum(val string) {
 }
 func (sv headerValidations) SetDefault(val interface{}) { sv.current.Default = val }
 func (sv headerValidations) SetExample(val interface{}) { sv.current.Example = val }
+func (sv headerValidations) SetType(val string)         { sv.current.Type = val }
 
 func newResponseDecl(file *ast.File, decl *ast.GenDecl, ts *ast.TypeSpec) responseDecl {
 	var rd responseDecl
@@ -330,6 +331,7 @@ func (rp *responseParser) parseStructType(gofile *ast.File, response *spec.Respo
 					newSingleLineTagParser("enum", &setEnum{headerValidations{&ps}, rxf(rxEnumFmt, "")}),
 					newSingleLineTagParser("default", &setDefault{&ps.SimpleSchema, headerValidations{&ps}, rxf(rxDefaultFmt, "")}),
 					newSingleLineTagParser("example", &setExample{&ps.SimpleSchema, headerValidations{&ps}, rxf(rxExampleFmt, "")}),
+					newSingleLineTagParser("type", &setType{&ps.SimpleSchema, headerValidations{&ps}, rxf(rxTypeFmt, "")}),
 				}
 				itemsTaggers := func(items *spec.Items, level int) []tagParser {
 					// the expression is 1-index based not 0-index
@@ -349,6 +351,7 @@ func (rp *responseParser) parseStructType(gofile *ast.File, response *spec.Respo
 						newSingleLineTagParser(fmt.Sprintf("items%dEnum", level), &setEnum{itemsValidations{items}, rxf(rxEnumFmt, itemsPrefix)}),
 						newSingleLineTagParser(fmt.Sprintf("items%dDefault", level), &setDefault{&items.SimpleSchema, itemsValidations{items}, rxf(rxDefaultFmt, itemsPrefix)}),
 						newSingleLineTagParser(fmt.Sprintf("items%dExample", level), &setExample{&items.SimpleSchema, itemsValidations{items}, rxf(rxExampleFmt, itemsPrefix)}),
+						newSingleLineTagParser(fmt.Sprintf("items%dType", level), &setType{&items.SimpleSchema, itemsValidations{items}, rxf(rxTypeFmt, itemsPrefix)}),
 					}
 				}
 
